@@ -9,9 +9,12 @@ services:
       MYSQL_DATABASE: dockerdeploy
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3310:3306"   # host 3307 mapped to container 3306
+      - "3310:3306"   # host 3307 mapped to container 3306
     volumes:
+      # This line ensures the data persists across restarts (this was already correct)
       - db_data:/var/lib/mysql
+      # NEW LINE: This mounts the init.sql file to automatically run your setup queries
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - portfolio-net
     healthcheck:
@@ -35,7 +38,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8081:8081"  # map container 8080 to host 8081 to avoid conflict
+      - "8081:8081"  # map container 8080 to host 8081 to avoid conflict
     networks:
       - portfolio-net
 
@@ -46,7 +49,7 @@ services:
     container_name: portfolio-frontend
     restart: always
     ports:
-      - "8087:80"   # host 8082 map to nginx 80
+      - "8087:80"   # host 8082 map to nginx 80
     depends_on:
       - backend
     networks:
