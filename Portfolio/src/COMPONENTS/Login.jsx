@@ -64,7 +64,7 @@ function Login() {
     <div className="page-wrapper">
       {/* Portfolio app in center */}
       <div className="portfolio-container">
-        <h1>Portfolio App</h1>
+        <h1>Portfolio website</h1>
       
       </div>
 
