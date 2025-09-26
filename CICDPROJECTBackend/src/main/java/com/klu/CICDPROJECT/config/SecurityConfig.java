@@ -3,6 +3,8 @@ package com.klu.CICDPROJECT.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -37,6 +39,16 @@ public class SecurityConfig {
 
         // 🚨 Removed httpBasic() to stop browser login popup
         return http.build();
+    }
+
+    /**
+     * Required PasswordEncoder bean. 
+     * Uses DelegatingPasswordEncoder which recognizes the {noop} prefix 
+     * in your database and treats the password as plain text for comparison.
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
